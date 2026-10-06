@@ -10,13 +10,13 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Must be first so it catches exceptions from the rest of the pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "KadreeBank API v1"));
 }
 
 app.UseHttpsRedirection();
