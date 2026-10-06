@@ -1,8 +1,16 @@
+using KadreeBank.API.Data;
 using KadreeBank.API.Middleware;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var connectionString = builder.Configuration.GetConnectionString("KadreeBank")
+    ?? throw new InvalidOperationException("Connection string 'KadreeBank' is not configured.");
+
+builder.Services.AddDbContext<KadreeBankDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
