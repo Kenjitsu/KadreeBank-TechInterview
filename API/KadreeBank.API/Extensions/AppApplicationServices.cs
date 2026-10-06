@@ -6,6 +6,7 @@ using KadreeBank.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace KadreeBank.API.Extensions;
 
@@ -35,7 +36,10 @@ public static class AppApplicationServices
 
     private static IServiceCollection AddControllersConfig(this IServiceCollection services)
     {
-        services.AddControllers().ConfigureApiBehaviorOptions(options =>
+        services.AddControllers()
+            .AddJsonOptions(options =>
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+            .ConfigureApiBehaviorOptions(options =>
         {
             options.InvalidModelStateResponseFactory = context =>
             {

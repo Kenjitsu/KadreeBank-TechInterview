@@ -70,8 +70,8 @@ public class AccountService(KadreeBankDbContext dbContext, TimeProvider timeProv
         => ApplyTransactionAsync(accountId, TransactionType.Withdrawal, request, cancellationToken);
 
     /// <summary>
-    /// Actualiza el saldo de la cuenta y registra la transacción en la base de datos. 
-    /// Se asegura de que la operación sea atómica y consistente.
+    /// Actualiza el saldo de la cuenta y registra la transaccion en la base de datos. 
+    /// Se asegura de que la operacion sea atomica y consistente.
     /// </summary>
     private async Task<Result<TransactionResponseDto>> ApplyTransactionAsync(
         int accountId,
@@ -98,7 +98,7 @@ public class AccountService(KadreeBankDbContext dbContext, TimeProvider timeProv
 
         if (affectedRows == 0)
         {
-            // No se actualizó ninguna fila, lo que significa que la cuenta no existe o no tiene fondos suficientes.
+            // No se actualizo ninguna fila, lo que significa que la cuenta no existe o no tiene fondos suficientes.
             var exists = await account.AnyAsync(cancellationToken);
 
             return exists
