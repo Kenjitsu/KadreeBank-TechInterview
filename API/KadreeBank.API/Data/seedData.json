@@ -1,0 +1,137 @@
+{
+  "customers": [
+    {
+      "documentNumber": "1012345678",
+      "fullName": "Laura Gómez",
+      "type": "NaturalPerson",
+      "pin": "1234",
+      "createdAt": "2026-07-15T14:00:00Z",
+      "accounts": [
+        {
+          "accountNumber": "4001000001",
+          "type": "Savings",
+          "city": "Bogota",
+          "createdAt": "2026-07-15T14:05:00Z",
+          "transactions": [
+            { "type": "Deposit", "amount": 3000000, "city": "Bogota", "createdAt": "2026-08-02T15:00:00Z" },
+            { "type": "Withdrawal", "amount": 500000, "city": "Bogota", "createdAt": "2026-08-10T17:30:00Z" },
+            { "type": "Withdrawal", "amount": 800000, "city": "Medellin", "createdAt": "2026-08-20T19:15:00Z" },
+            { "type": "Deposit", "amount": 1200000, "city": "Bogota", "createdAt": "2026-09-01T14:00:00Z" },
+            { "type": "Withdrawal", "amount": 700000, "city": "Cali", "createdAt": "2026-09-15T21:45:00Z" },
+            { "type": "Withdrawal", "amount": 300000, "city": "Bogota", "createdAt": "2026-09-25T16:20:00Z" },
+            { "type": "Deposit", "amount": 2500000, "city": "Bogota", "createdAt": "2026-10-01T13:10:00Z" },
+            { "type": "Withdrawal", "amount": 450000, "city": "Bogota", "createdAt": "2026-10-05T18:40:00Z" }
+          ]
+        }
+      ]
+    },
+    {
+      "documentNumber": "79876543",
+      "fullName": "Carlos Rodríguez",
+      "type": "NaturalPerson",
+      "pin": "5678",
+      "createdAt": "2026-07-20T15:00:00Z",
+      "accounts": [
+        {
+          "accountNumber": "4001000002",
+          "type": "Savings",
+          "city": "Medellin",
+          "createdAt": "2026-07-20T15:10:00Z",
+          "transactions": [
+            { "type": "Deposit", "amount": 1500000, "city": "Medellin", "createdAt": "2026-08-05T14:30:00Z" },
+            { "type": "Withdrawal", "amount": 1200000, "city": "Bogota", "createdAt": "2026-09-12T20:00:00Z" },
+            { "type": "Deposit", "amount": 600000, "city": "Medellin", "createdAt": "2026-10-03T15:00:00Z" },
+            { "type": "Withdrawal", "amount": 200000, "city": "Medellin", "createdAt": "2026-10-04T17:00:00Z" }
+          ]
+        }
+      ]
+    },
+    {
+      "documentNumber": "52345678",
+      "fullName": "María Fernanda López",
+      "type": "NaturalPerson",
+      "pin": "2468",
+      "createdAt": "2026-07-25T16:00:00Z",
+      "accounts": [
+        {
+          "accountNumber": "4001000003",
+          "type": "Savings",
+          "city": "Cali",
+          "createdAt": "2026-07-25T16:10:00Z",
+          "transactions": [
+            { "type": "Deposit", "amount": 800000, "city": "Cali", "createdAt": "2026-08-07T15:00:00Z" },
+            { "type": "Withdrawal", "amount": 300000, "city": "Cali", "createdAt": "2026-10-02T16:00:00Z" },
+            { "type": "Withdrawal", "amount": 100000, "city": "Cali", "createdAt": "2026-10-04T19:30:00Z" }
+          ]
+        },
+        {
+          "accountNumber": "4001000004",
+          "type": "Savings",
+          "city": "Barranquilla",
+          "createdAt": "2026-09-28T14:00:00Z",
+          "transactions": [
+            { "type": "Deposit", "amount": 1000000, "city": "Barranquilla", "createdAt": "2026-10-01T15:00:00Z" },
+            { "type": "Withdrawal", "amount": 250000, "city": "Barranquilla", "createdAt": "2026-10-03T18:00:00Z" }
+          ]
+        }
+      ]
+    },
+    {
+      "documentNumber": "900123456",
+      "fullName": "Inversiones Andinas S.A.S.",
+      "type": "Company",
+      "pin": "1357",
+      "createdAt": "2026-07-10T13:00:00Z",
+      "accounts": [
+        {
+          "accountNumber": "5001000001",
+          "type": "Checking",
+          "city": "Bogota",
+          "createdAt": "2026-07-10T13:15:00Z",
+          "transactions": [
+            { "type": "Deposit", "amount": 50000000, "city": "Bogota", "createdAt": "2026-08-01T14:00:00Z" },
+            { "type": "Withdrawal", "amount": 12000000, "city": "Medellin", "createdAt": "2026-08-15T16:00:00Z" },
+            { "type": "Deposit", "amount": 20000000, "city": "Bogota", "createdAt": "2026-09-01T14:00:00Z" },
+            { "type": "Withdrawal", "amount": 8000000, "city": "Bogota", "createdAt": "2026-09-20T15:30:00Z" },
+            { "type": "Withdrawal", "amount": 5000000, "city": "Cartagena", "createdAt": "2026-09-28T17:00:00Z" },
+            { "type": "Deposit", "amount": 15000000, "city": "Bogota", "createdAt": "2026-10-01T14:00:00Z" },
+            { "type": "Withdrawal", "amount": 3000000, "city": "Bogota", "createdAt": "2026-10-02T15:00:00Z" },
+            { "type": "Withdrawal", "amount": 2500000, "city": "Bogota", "createdAt": "2026-10-04T16:00:00Z" },
+            { "type": "Withdrawal", "amount": 1000000, "city": "Cali", "createdAt": "2026-10-05T17:00:00Z" }
+          ]
+        }
+      ]
+    },
+    {
+      "documentNumber": "800987654",
+      "fullName": "Comercializadora del Caribe Ltda.",
+      "type": "Company",
+      "pin": "9753",
+      "createdAt": "2026-08-20T14:00:00Z",
+      "accounts": [
+        {
+          "accountNumber": "5001000002",
+          "type": "Checking",
+          "city": "Barranquilla",
+          "createdAt": "2026-08-20T14:20:00Z",
+          "transactions": [
+            { "type": "Deposit", "amount": 10000000, "city": "Barranquilla", "createdAt": "2026-09-03T14:00:00Z" },
+            { "type": "Withdrawal", "amount": 400000, "city": "Santa Marta", "createdAt": "2026-10-01T16:00:00Z" },
+            { "type": "Deposit", "amount": 2000000, "city": "Barranquilla", "createdAt": "2026-10-02T14:30:00Z" },
+            { "type": "Withdrawal", "amount": 1500000, "city": "Barranquilla", "createdAt": "2026-10-03T15:00:00Z" },
+            { "type": "Withdrawal", "amount": 300000, "city": "Barranquilla", "createdAt": "2026-10-04T16:30:00Z" },
+            { "type": "Deposit", "amount": 700000, "city": "Barranquilla", "createdAt": "2026-10-05T14:00:00Z" }
+          ]
+        }
+      ]
+    },
+    {
+      "documentNumber": "1098765432",
+      "fullName": "Andrés Martínez",
+      "type": "NaturalPerson",
+      "pin": "1111",
+      "createdAt": "2026-10-01T15:00:00Z",
+      "accounts": []
+    }
+  ]
+}

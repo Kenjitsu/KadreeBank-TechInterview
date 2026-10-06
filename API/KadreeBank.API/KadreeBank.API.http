@@ -1,3 +1,74 @@
 @KadreeBank.API_HostAddress = http://localhost:5078
 
+# Datos sembrados en Data/seedData.json (cliente 1: Laura Gómez, documento 1012345678, PIN 1234, cuenta 1).
+
+### Login
+POST {{KadreeBank.API_HostAddress}}/api/Auth/login
+Content-Type: application/json
+
+{
+  "documentNumber": "1012345678",
+  "pin": "1234"
+}
+
+### Crear cliente (cambiar el documento para repetir)
+POST {{KadreeBank.API_HostAddress}}/api/Customers
+Content-Type: application/json
+
+{
+  "documentNumber": "1020304050",
+  "fullName": "Sofía Ramírez",
+  "type": "NaturalPerson",
+  "pin": "4321"
+}
+
+### Obtener cliente con sus cuentas
+GET {{KadreeBank.API_HostAddress}}/api/Customers/1
+
+### Abrir cuenta
+POST {{KadreeBank.API_HostAddress}}/api/Accounts
+Content-Type: application/json
+
+{
+  "customerId": 6,
+  "type": "Savings",
+  "city": "Pereira"
+}
+
+### Obtener cuenta
+GET {{KadreeBank.API_HostAddress}}/api/Accounts/1
+
+### Consultar saldo
+GET {{KadreeBank.API_HostAddress}}/api/Accounts/1/balance
+
+### Consignar
+POST {{KadreeBank.API_HostAddress}}/api/Accounts/1/deposits
+Content-Type: application/json
+
+{
+  "amount": 250000,
+  "city": "Bogota"
+}
+
+### Retirar
+POST {{KadreeBank.API_HostAddress}}/api/Accounts/1/withdrawals
+Content-Type: application/json
+
+{
+  "amount": 100000,
+  "city": "Bogota"
+}
+
+### Movimientos recientes
+GET {{KadreeBank.API_HostAddress}}/api/Accounts/1/transactions?take=5
+
+### Extracto mensual
+GET {{KadreeBank.API_HostAddress}}/api/Accounts/1/statements/2026/9
+
+### Reporte: clientes por número de transacciones en un mes
+GET {{KadreeBank.API_HostAddress}}/api/Reports/monthly-transactions?year=2026&month=10
+
+### Reporte: retiros fuera de la ciudad mayores a $1.000.000
+GET {{KadreeBank.API_HostAddress}}/api/Reports/out-of-city-withdrawals
+
 ###

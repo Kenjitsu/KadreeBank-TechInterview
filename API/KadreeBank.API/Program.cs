@@ -19,8 +19,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("DevCorsPolicy");
+
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    await AppInitializer.InitializeDatabaseAsync(scope.ServiceProvider);
+}
 
 app.Run();
