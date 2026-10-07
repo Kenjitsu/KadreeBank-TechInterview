@@ -1,7 +1,5 @@
 @KadreeBank.API_HostAddress = http://localhost:5078
 
-# Datos sembrados en Data/seedData.json (cliente 1: Laura Gómez, documento 1012345678, PIN 1234, cuenta 1).
-
 ### Login
 POST {{KadreeBank.API_HostAddress}}/api/Auth/login
 Content-Type: application/json
@@ -11,7 +9,7 @@ Content-Type: application/json
   "pin": "1234"
 }
 
-### Crear cliente (cambiar el documento para repetir)
+### Crear cliente
 POST {{KadreeBank.API_HostAddress}}/api/Customers
 Content-Type: application/json
 
@@ -68,7 +66,7 @@ GET {{KadreeBank.API_HostAddress}}/api/Accounts/1/statements/2026/9
 ### Reporte: clientes por número de transacciones en un mes
 GET {{KadreeBank.API_HostAddress}}/api/Reports/monthly-transactions?year=2026&month=10
 
-### Reporte: retiros fuera de la ciudad mayores a $1.000.000
+### Reporte: retiros fuera de la ciudad mayores a un millon
 GET {{KadreeBank.API_HostAddress}}/api/Reports/out-of-city-withdrawals
 
 ###
