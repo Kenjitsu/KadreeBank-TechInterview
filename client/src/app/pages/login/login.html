@@ -1,0 +1,57 @@
+<div class="mx-auto max-w-md">
+  <div class="mb-6 text-center">
+    <h1 class="text-2xl font-bold text-slate-900">Bienvenido a KadreeBank</h1>
+    <p class="mt-1 text-sm text-slate-500">Ingresa con tu número de documento y tu PIN.</p>
+  </div>
+
+  <form class="card space-y-4" [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <label class="label" for="documentNumber">Número de documento</label>
+      <input
+        id="documentNumber"
+        class="input"
+        formControlName="documentNumber"
+        inputmode="numeric"
+        autocomplete="username"
+        placeholder="1012345678"
+      />
+      @if (form.controls.documentNumber.touched && form.controls.documentNumber.invalid) {
+        <p class="field-error">Ingresa entre 5 y 20 dígitos.</p>
+      }
+    </div>
+
+    <div>
+      <label class="label" for="pin">PIN</label>
+      <input
+        id="pin"
+        class="input tracking-[0.5em]"
+        type="password"
+        formControlName="pin"
+        inputmode="numeric"
+        maxlength="4"
+        autocomplete="current-password"
+        placeholder="••••"
+      />
+      @if (form.controls.pin.touched && form.controls.pin.invalid) {
+        <p class="field-error">El PIN debe tener exactamente 4 dígitos.</p>
+      }
+    </div>
+
+    @if (error(); as message) {
+      <p class="alert-error">{{ message }}</p>
+    }
+
+    <button type="submit" class="btn btn-primary w-full" [disabled]="loading()">
+      {{ loading() ? 'Ingresando…' : 'Ingresar' }}
+    </button>
+
+    <p class="text-center text-sm text-slate-500">
+      ¿No tienes cuenta?
+      <a routerLink="/register" class="font-medium text-indigo-600 hover:underline">Regístrate</a>
+    </p>
+  </form>
+
+  <p class="mt-4 text-center text-xs text-slate-400">
+    Datos de prueba: documento <strong>1012345678</strong> · PIN <strong>1234</strong>
+  </p>
+</div>

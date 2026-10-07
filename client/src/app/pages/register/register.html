@@ -1,0 +1,90 @@
+<div class="mx-auto max-w-md">
+  <div class="mb-6 text-center">
+    <h1 class="text-2xl font-bold text-slate-900">Crear cliente</h1>
+    <p class="mt-1 text-sm text-slate-500">Regístrate para abrir cuentas y operar.</p>
+  </div>
+
+  <form class="card space-y-4" [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <span class="label">Tipo de cliente</span>
+      <div class="grid grid-cols-2 gap-2">
+        @for (option of customerTypes; track option[0]) {
+          <label
+            class="flex cursor-pointer items-center justify-center rounded-lg px-3 py-2 text-sm font-medium ring-1 transition"
+            [class]="
+              form.controls.type.value === option[0]
+                ? 'bg-indigo-50 text-indigo-700 ring-indigo-400'
+                : 'text-slate-600 ring-slate-300 hover:bg-slate-50'
+            "
+          >
+            <input type="radio" class="sr-only" formControlName="type" [value]="option[0]" />
+            {{ option[1] }}
+          </label>
+        }
+      </div>
+      <p class="mt-1 text-xs text-slate-500">
+        @if (form.controls.type.value === 'NaturalPerson') {
+          Las personas naturales abren cuentas de ahorros.
+        } @else {
+          Las empresas abren cuentas corrientes.
+        }
+      </p>
+    </div>
+
+    <div>
+      <label class="label" for="fullName">
+        {{ form.controls.type.value === 'Company' ? 'Razón social' : 'Nombre completo' }}
+      </label>
+      <input id="fullName" class="input" formControlName="fullName" autocomplete="name" />
+      @if (form.controls.fullName.touched && form.controls.fullName.invalid) {
+        <p class="field-error">Ingresa entre 3 y 150 caracteres.</p>
+      }
+    </div>
+
+    <div>
+      <label class="label" for="documentNumber">
+        {{ form.controls.type.value === 'Company' ? 'NIT' : 'Número de documento' }}
+      </label>
+      <input
+        id="documentNumber"
+        class="input"
+        formControlName="documentNumber"
+        inputmode="numeric"
+        autocomplete="username"
+      />
+      @if (form.controls.documentNumber.touched && form.controls.documentNumber.invalid) {
+        <p class="field-error">Ingresa entre 5 y 20 dígitos, sin puntos ni guiones.</p>
+      }
+    </div>
+
+    <div>
+      <label class="label" for="pin">PIN de 4 dígitos</label>
+      <input
+        id="pin"
+        class="input tracking-[0.5em]"
+        type="password"
+        formControlName="pin"
+        inputmode="numeric"
+        maxlength="4"
+        autocomplete="new-password"
+        placeholder="••••"
+      />
+      @if (form.controls.pin.touched && form.controls.pin.invalid) {
+        <p class="field-error">El PIN debe tener exactamente 4 dígitos.</p>
+      }
+    </div>
+
+    @if (error(); as message) {
+      <p class="alert-error">{{ message }}</p>
+    }
+
+    <button type="submit" class="btn btn-primary w-full" [disabled]="loading()">
+      {{ loading() ? 'Creando…' : 'Crear cliente' }}
+    </button>
+
+    <p class="text-center text-sm text-slate-500">
+      ¿Ya eres cliente?
+      <a routerLink="/login" class="font-medium text-indigo-600 hover:underline">Ingresa</a>
+    </p>
+  </form>
+</div>

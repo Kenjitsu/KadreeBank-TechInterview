@@ -1,0 +1,210 @@
+<a
+  routerLink="/accounts"
+  class="mb-4 inline-block text-sm font-medium text-indigo-600 hover:underline"
+>
+  ← Mis cuentas
+</a>
+
+@if (loadError(); as message) {
+  <p class="alert-error">{{ message }}</p>
+}
+
+@if (account(); as account) {
+  <!-- Saldo -->
+  <section
+    class="mb-6 flex flex-wrap items-end justify-between gap-4 rounded-2xl bg-linear-to-br from-indigo-600 to-indigo-800 p-6 text-white shadow"
+  >
+    <div>
+      <p class="text-sm text-indigo-200">
+        Cuenta de {{ accountTypeLabels[account.type] | lowercase }} · {{ account.city }}
+      </p>
+      <h1 class="font-mono text-xl font-semibold">N.º {{ account.accountNumber }}</h1>
+    </div>
+    <div class="text-right">
+      <p class="text-sm text-indigo-200">Saldo disponible</p>
+      <p class="text-3xl font-bold">{{ balance() | money }}</p>
+      <button
+        type="button"
+        class="mt-1 cursor-pointer text-xs text-indigo-200 hover:text-white disabled:opacity-60"
+        [disabled]="refreshingBalance()"
+        (click)="refreshBalance()"
+      >
+        {{ refreshingBalance() ? 'Consultando…' : '↻ Consultar saldo' }}
+      </button>
+    </div>
+  </section>
+
+  <div class="grid gap-6 lg:grid-cols-3">
+    <!-- Consignación / retiro -->
+    <section>
+      <form class="card space-y-4" [formGroup]="operationForm" (ngSubmit)="submitOperation()">
+        <h2 class="card-title mb-0">Nueva operación</h2>
+
+        <div class="grid grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1">
+          <button
+            type="button"
+            class="cursor-pointer rounded-md py-1.5 text-sm font-medium transition"
+            [class]="
+              operation() === 'Deposit' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-500'
+            "
+            (click)="selectOperation('Deposit')"
+          >
+            Consignar
+          </button>
+          <button
+            type="button"
+            class="cursor-pointer rounded-md py-1.5 text-sm font-medium transition"
+            [class]="
+              operation() === 'Withdrawal' ? 'bg-white text-rose-700 shadow-sm' : 'text-slate-500'
+            "
+            (click)="selectOperation('Withdrawal')"
+          >
+            Retirar
+          </button>
+        </div>
+
+        <div>
+          <label class="label" for="amount">Monto</label>
+          <input
+            id="amount"
+            class="input"
+            type="number"
+            min="0.01"
+            step="0.01"
+            formControlName="amount"
+            placeholder="0"
+          />
+          @if (operationForm.controls.amount.touched && operationForm.controls.amount.invalid) {
+            <p class="field-error">Ingresa un monto mayor a 0 con máximo 2 decimales.</p>
+          } @else if (operationForm.controls.amount.value) {
+            <p class="mt-1 text-xs text-slate-500">
+              {{ operationForm.controls.amount.value | money }}
+            </p>
+          }
+        </div>
+
+        <div>
+          <label class="label" for="city">Ciudad de la operación</label>
+          <select id="city" class="input" formControlName="city">
+            @for (city of cityOptions(); track city) {
+              <option [value]="city">{{ city }}</option>
+            }
+          </select>
+          @if (operationForm.controls.city.touched && operationForm.controls.city.invalid) {
+            <p class="field-error">Selecciona una ciudad.</p>
+          }
+        </div>
+
+        @if (operationError(); as message) {
+          <p class="alert-error">{{ message }}</p>
+        }
+        @if (operationSuccess(); as message) {
+          <p class="alert-success">{{ message }}</p>
+        }
+
+        <button
+          type="submit"
+          class="btn w-full text-white"
+          [class]="
+            operation() === 'Deposit'
+              ? 'bg-emerald-600 hover:bg-emerald-700'
+              : 'bg-rose-600 hover:bg-rose-700'
+          "
+          [disabled]="submitting()"
+        >
+          @if (submitting()) {
+            Procesando…
+          } @else {
+            {{ operation() === 'Deposit' ? 'Consignar' : 'Retirar' }}
+          }
+        </button>
+      </form>
+    </section>
+
+    <!-- Movimientos recientes -->
+    <section class="card lg:col-span-2">
+      <div class="mb-4 flex items-center justify-between gap-4">
+        <h2 class="card-title mb-0">Movimientos recientes</h2>
+        <label class="flex items-center gap-2 text-sm text-slate-500">
+          Mostrar
+          <select class="input w-auto py-1" (change)="changeTake($any($event.target).value)">
+            @for (option of takeOptions; track option) {
+              <option [value]="option" [selected]="option === take()">{{ option }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      @if (transactionsError(); as message) {
+        <p class="alert-error">{{ message }}</p>
+      } @else {
+        <app-transactions-table
+          [transactions]="transactions()"
+          emptyMessage="Esta cuenta aún no tiene movimientos."
+        />
+      }
+    </section>
+  </div>
+
+  <!-- Extracto mensual -->
+  <section class="card mt-6">
+    <form
+      class="mb-4 flex flex-wrap items-end justify-between gap-4"
+      [formGroup]="statementForm"
+      (ngSubmit)="loadStatement()"
+    >
+      <h2 class="card-title mb-0">Extracto mensual</h2>
+      <div class="flex flex-wrap items-end gap-2">
+        <select class="input w-auto" formControlName="month" aria-label="Mes">
+          @for (name of months; track $index) {
+            <option [ngValue]="$index + 1">{{ name }}</option>
+          }
+        </select>
+        <select class="input w-auto" formControlName="year" aria-label="Año">
+          @for (year of years; track year) {
+            <option [ngValue]="year">{{ year }}</option>
+          }
+        </select>
+        <button type="submit" class="btn btn-secondary" [disabled]="loadingStatement()">
+          {{ loadingStatement() ? 'Generando…' : 'Generar' }}
+        </button>
+      </div>
+    </form>
+
+    @if (statementError(); as message) {
+      <p class="alert-error">{{ message }}</p>
+    } @else if (statement(); as statement) {
+      <p class="mb-4 text-sm text-slate-500">
+        {{ months[statement.month - 1] }} de {{ statement.year }}
+      </p>
+      <div class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+        <div class="rounded-xl bg-slate-50 p-4">
+          <p class="text-xs text-slate-500">Saldo inicial</p>
+          <p class="mt-1 text-lg font-semibold">{{ statement.openingBalance | money }}</p>
+        </div>
+        <div class="rounded-xl bg-emerald-50 p-4">
+          <p class="text-xs text-emerald-700">Consignaciones</p>
+          <p class="mt-1 text-lg font-semibold text-emerald-700">
+            +{{ statement.totalDeposits | money }}
+          </p>
+        </div>
+        <div class="rounded-xl bg-rose-50 p-4">
+          <p class="text-xs text-rose-700">Retiros</p>
+          <p class="mt-1 text-lg font-semibold text-rose-700">
+            −{{ statement.totalWithdrawals | money }}
+          </p>
+        </div>
+        <div class="rounded-xl bg-indigo-50 p-4">
+          <p class="text-xs text-indigo-700">Saldo final</p>
+          <p class="mt-1 text-lg font-semibold text-indigo-700">
+            {{ statement.closingBalance | money }}
+          </p>
+        </div>
+      </div>
+      <app-transactions-table
+        [transactions]="statement.transactions"
+        emptyMessage="No hubo movimientos en este mes."
+      />
+    }
+  </section>
+}

@@ -1,0 +1,128 @@
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-slate-900">Reportes</h1>
+  <p class="mt-1 text-sm text-slate-500">Consultas generales sobre los movimientos del banco.</p>
+</div>
+
+<div class="grid gap-6 lg:grid-cols-2">
+  <!-- Transacciones por cliente en un mes -->
+  <section class="card">
+    <h2 class="card-title mb-1">Transacciones por cliente</h2>
+    <p class="mb-4 text-sm text-slate-500">
+      Clientes ordenados por número de transacciones en el mes, de mayor a menor.
+    </p>
+
+    <form class="mb-4 flex flex-wrap gap-2" [formGroup]="monthlyForm" (ngSubmit)="loadMonthly()">
+      <select class="input w-auto" formControlName="month" aria-label="Mes">
+        @for (name of months; track $index) {
+          <option [ngValue]="$index + 1">{{ name }}</option>
+        }
+      </select>
+      <select class="input w-auto" formControlName="year" aria-label="Año">
+        @for (year of years; track year) {
+          <option [ngValue]="year">{{ year }}</option>
+        }
+      </select>
+      <button type="submit" class="btn btn-primary" [disabled]="loadingMonthly()">
+        {{ loadingMonthly() ? 'Consultando…' : 'Consultar' }}
+      </button>
+    </form>
+
+    @if (monthlyError(); as message) {
+      <p class="alert-error">{{ message }}</p>
+    } @else if (monthlyItems(); as items) {
+      @if (items.length === 0) {
+        <p class="empty">No hubo transacciones en este mes.</p>
+      } @else {
+        <div class="overflow-x-auto">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Cliente</th>
+                <th>Documento</th>
+                <th class="text-right">Transacciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of items; track item.customerId; let i = $index) {
+                <tr>
+                  <td class="text-slate-400">{{ i + 1 }}</td>
+                  <td class="font-medium text-slate-900">{{ item.fullName }}</td>
+                  <td class="text-slate-500">{{ item.documentNumber }}</td>
+                  <td class="text-right">
+                    <span class="badge bg-indigo-50 text-indigo-700">{{
+                      item.transactionCount
+                    }}</span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+  </section>
+
+  <!-- Retiros fuera de la ciudad de origen -->
+  <section class="card">
+    <h2 class="card-title mb-1">Retiros fuera de la ciudad de origen</h2>
+    <p class="mb-4 text-sm text-slate-500">
+      Clientes cuyos retiros fuera de la ciudad de su cuenta suman más de {{ 1000000 | money }}.
+    </p>
+
+    <form
+      class="mb-4 flex flex-wrap gap-2"
+      [formGroup]="outOfCityForm"
+      (ngSubmit)="loadOutOfCity()"
+    >
+      <select class="input w-auto" formControlName="year" aria-label="Año">
+        <option [ngValue]="null">Todo el histórico</option>
+        @for (year of years; track year) {
+          <option [ngValue]="year">{{ year }}</option>
+        }
+      </select>
+      <select class="input w-auto" formControlName="month" aria-label="Mes">
+        <option [ngValue]="null">Todo el año</option>
+        @for (name of months; track $index) {
+          <option [ngValue]="$index + 1">{{ name }}</option>
+        }
+      </select>
+      <button type="submit" class="btn btn-primary" [disabled]="loadingOutOfCity()">
+        {{ loadingOutOfCity() ? 'Consultando…' : 'Consultar' }}
+      </button>
+    </form>
+
+    @if (outOfCityError(); as message) {
+      <p class="alert-error">{{ message }}</p>
+    } @else if (outOfCityItems(); as items) {
+      @if (items.length === 0) {
+        <p class="empty">Ningún cliente supera el umbral en este periodo.</p>
+      } @else {
+        <div class="overflow-x-auto">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Documento</th>
+                <th class="text-right">Retiros</th>
+                <th class="text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of items; track item.customerId) {
+                <tr>
+                  <td class="font-medium text-slate-900">{{ item.fullName }}</td>
+                  <td class="text-slate-500">{{ item.documentNumber }}</td>
+                  <td class="text-right">{{ item.withdrawalCount }}</td>
+                  <td class="text-right font-semibold whitespace-nowrap text-rose-600">
+                    {{ item.totalWithdrawn | money }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+  </section>
+</div>
